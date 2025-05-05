@@ -127,11 +127,8 @@ const Index: React.FC = () => {
   const resultType = searchParams.get("result") as "success" | "warning" | "danger" | null;
 
   useEffect(() => {
-    // Update the error message approach to not use querySelector with square brackets
-    // as they need to be escaped in CSS selectors
     try {
-      // Instead of trying to find by class name with special characters,
-      // we can use a more reliable approach or simply remove this code if not needed
+      // Use querySelectorAll with simpler class selector
       const errorMessages = document.querySelectorAll(".text-center.text-xs");
       errorMessages.forEach(element => {
         if (element.textContent && element.textContent.trim().length > 0) {
@@ -145,21 +142,8 @@ const Index: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      {resultType && resultCards[resultType] ? (
-        <div className="bg-[#F04E98] pt-4 pb-8 px-4 md:px-8">
-          {showHeader && (
-            <header className="flex justify-center mb-8">
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/af9bbf66fcfa9596dd63154d939f52e3a7148cdd?placeholderIfAbsent=true"
-                className="aspect-[4.67] object-contain w-28 max-w-full"
-                alt="Logo"
-              />
-            </header>
-          )}
-          <ResultCard {...resultCards[resultType]} />
-        </div>
-      ) : null}
-      <LPDesktop showAllResults={false} resultType={resultType} />
+      {/* Remove the result card from here as we'll display it in LPDesktop */}
+      <LPDesktop showAllResults={false} resultType={resultType} resultCards={resultCards} />
     </div>
   );
 };

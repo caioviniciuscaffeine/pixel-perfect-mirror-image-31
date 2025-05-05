@@ -3,130 +3,35 @@ import ResultCard from "./ResultCard";
 import CTAButton from "./CTAButton";
 import SignalCard from "./SignalCard";
 import TopicItem from "./TopicItem";
+import { Play } from "lucide-react";
+
+interface ResultCardData {
+  status: "success" | "warning" | "danger";
+  icon: string;
+  title: string;
+  description: React.ReactNode;
+  tips: {
+    icon: string;
+    text: React.ReactNode;
+    isBold?: boolean;
+  }[];
+  productImage: string;
+  ctaTitle: string;
+  ctaDescription: string;
+  bgColor: string;
+}
 
 interface LPDesktopProps {
   showAllResults?: boolean;
   resultType?: "success" | "warning" | "danger" | null;
+  resultCards?: Record<string, ResultCardData>;
 }
 
-export const LPDesktop: React.FC<LPDesktopProps> = ({ showAllResults = true, resultType = null }) => {
-  // Define result card data
-  const resultCards = {
-    success: {
-      status: "success" as const,
-      icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/e31516efbc660cf3bc328395aa302fa9d515573b?placeholderIfAbsent=true",
-      title: "Imune ON!",
-      description: (
-        <>
-          Parabéns,{" "}
-          <span className="font-bold">
-            sua imunidade está em dia!
-          </span>{" "}
-          Seu corpo está mostrando que você tem mantido bons hábitos e
-          cuidando bem da sua saúde.
-        </>
-      ),
-      tips: [
-        {
-          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/ac138dbec31241cb9b0fd64c698048fb905e830e?placeholderIfAbsent=true",
-          text: "Mantenha uma alimentação equilibrada.",
-        },
-        {
-          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/2c12bba42edefa54febb179a0d3df9206883c054?placeholderIfAbsent=true",
-          text: "Beba bastante água ao longo do dia.",
-        },
-        {
-          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/8b59dca174e15552c102ee80564874571f5ada52?placeholderIfAbsent=true",
-          text: "Siga praticando atividade física com frequência.",
-        },
-      ],
-      productImage: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/79beca27cdaf2f4c9cb42e8d83d980a93773bf1f?placeholderIfAbsent=true",
-      ctaTitle: "Que tal começar o dia nutrindo o corpo com vitaminas, minerais e aminoácidos?",
-      ctaDescription: "Experimente o Morning Shot! Mais do que um shot matinal, Morning Shot é um lembrete diário de autocuidado, que incentiva outros hábitos saudáveis ao longo do dia.",
-      bgColor: "#E0F3B3",
-    },
-    warning: {
-      status: "warning" as const,
-      icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/a5db1e968f4fafa0a2851679a878cb89aa8e3dcd?placeholderIfAbsent=true",
-      title: "Zona de Atenção!",
-      description: (
-        <>
-          <span className="font-bold">
-            Sua imunidade está instável
-          </span>
-          , e pode estar precisando de um reforço.
-        </>
-      ),
-      tips: [
-        {
-          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/ac138dbec31241cb9b0fd64c698048fb905e830e?placeholderIfAbsent=true",
-          text: "Priorize alimentos ricos em fibras, vitaminas e minerais.",
-        },
-        {
-          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/2c12bba42edefa54febb179a0d3df9206883c054?placeholderIfAbsent=true",
-          text: "Beba bastante água ao longo do dia.",
-        },
-        {
-          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/c7804d3f2301933032eab040eef6f15063c671a1?placeholderIfAbsent=true",
-          text: "Tente manter uma rotina de sono regular.",
-        },
-      ],
-      productImage: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/79beca27cdaf2f4c9cb42e8d83d980a93773bf1f?placeholderIfAbsent=true",
-      ctaTitle: "Comece com um hábito saboroso e prático: como incluir Morning Shot na sua rotina..",
-      ctaDescription: "O seu aliado matinal que possui ingredientes selecionados que atuam auxiliando o sistema imunológico e combatendo os danos causados por radicais livres.",
-      bgColor: "#FFE3B2",
-    },
-    danger: {
-      status: "danger" as const,
-      icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/ae40d85b737d011c5fa697356d59193a6abc7134?placeholderIfAbsent=true",
-      title: "Imunidade em Alerta!",
-      description: (
-        <>
-          Seu corpo demonstra{" "}
-          <span className="font-bold">sinais de baixa imunidade</span>
-          , e o cansaço constante, gripes frequentes ou baixa disposição
-          são reflexos disso.
-        </>
-      ),
-      tips: [
-        {
-          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/ac138dbec31241cb9b0fd64c698048fb905e830e?placeholderIfAbsent=true",
-          text: (
-            <>
-              <span className="font-bold">
-                Reavalie sua alimentação:
-              </span>{" "}
-              comece incluindo frutas cítricas, vegetais verdes e fontes
-              naturais de zinco e ferro.
-            </>
-          ),
-        },
-        {
-          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/503ee7c7a1ce0e90c45235aacc91547a4a2bcaa8?placeholderIfAbsent=true",
-          text: (
-            <>
-              <span className="font-bold">Cuide da mente:</span> o
-              estresse prolongado pode abalar (muito!) sua imunidade.
-            </>
-          ),
-        },
-        {
-          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/c7804d3f2301933032eab040eef6f15063c671a1?placeholderIfAbsent=true",
-          text: (
-            <>
-              <span className="font-bold">Dê atenção ao sono:</span>{" "}
-              noites mal dormidas podem enfraquecer suas defesas.
-            </>
-          ),
-        },
-      ],
-      productImage: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/79beca27cdaf2f4c9cb42e8d83d980a93773bf1f?placeholderIfAbsent=true",
-      ctaTitle: "Comece com um hábito savoroso e prático: como incluir Morning Shot na sua rotina..",
-      ctaDescription: "Experimente o Morning Shot! Uma fórmula rica em vitaminas, minerais e aminoácidos que ajudam a fortalecer a imunidade de forma prática e saborosa",
-      bgColor: "#FFCED9",
-    },
-  };
-
+export const LPDesktop: React.FC<LPDesktopProps> = ({ 
+  showAllResults = true, 
+  resultType = null,
+  resultCards = {}
+}) => {
   // Determine which result cards to render based on props
   const renderResultCards = () => {
     if (showAllResults) {
@@ -139,9 +44,6 @@ export const LPDesktop: React.FC<LPDesktopProps> = ({ showAllResults = true, res
           </section>
         );
       });
-    } else if (resultType && resultCards[resultType]) {
-      // Only show the specific result
-      return null; // We're already showing the result in the Index component
     }
     
     return null;
@@ -159,10 +61,26 @@ export const LPDesktop: React.FC<LPDesktopProps> = ({ showAllResults = true, res
 
       {renderResultCards()}
 
-      <section className="shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex min-h-[600px] w-full flex-col overflow-hidden items-center justify-center px-8 py-[136px] max-md:max-w-full max-md:px-5 max-md:py-[100px] bg-[#F04E98]">
-        <div className="relative flex w-[560px] max-w-full flex-col items-center text-center">
+      <section className="relative shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex min-h-[600px] w-full flex-col overflow-hidden items-center justify-center px-8 py-[136px] max-md:max-w-full max-md:px-5 max-md:py-[100px] bg-[#F04E98]">
+        {/* Video background */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <video 
+            autoPlay 
+            muted 
+            loop 
+            className="absolute object-cover w-full h-full opacity-30"
+            poster="/public/lovable-uploads/b26b8670-8009-4896-9aa6-294145eddbfa.png"
+          >
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-white-particles-moving-on-a-dark-background-4471-large.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div className="absolute inset-0 bg-[#F04E98] opacity-60"></div>
+        </div>
+        
+        {/* Content */}
+        <div className="relative z-10 flex w-[560px] max-w-full flex-col items-center text-center">
           <div className="absolute z-0 flex min-h-[42px] w-[155px] max-w-full h-[42px] bg-[#97D700] right-2 top-[38px]" />
-          <div className="z-0 flex w-full flex-col items-center text-white font-semibold">
+          <div className="z-10 flex w-full flex-col items-center text-white font-semibold">
             <img
               src="https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/ba32556d964df1022d3f2db86164802b682ecb9a?placeholderIfAbsent=true"
               className="aspect-[4.67] object-contain w-28 max-w-full"
@@ -175,19 +93,33 @@ export const LPDesktop: React.FC<LPDesktopProps> = ({ showAllResults = true, res
               Cuide dela todos os dias.
             </h2>
           </div>
-          <p className="text-white text-2xl font-normal leading-6 z-0 mt-8 max-md:max-w-full">
+          <p className="text-white text-2xl font-normal leading-6 z-10 mt-8 max-md:max-w-full">
             Gripes recorrentes, cansaço, falta de foco?
             <br />
             Talvez seu corpo esteja pedindo ajuda.
           </p>
         </div>
-        <CTAButton 
-          text="Conheça Morning Shot" 
-          bgColor="#FFF" 
-          textColor="#F04E98" 
-          className="w-[441px] max-w-full mt-16 max-md:mt-10" 
-        />
+        
+        <div className="relative z-10">
+          <CTAButton 
+            text="Conheça Morning Shot" 
+            bgColor="#FFF" 
+            textColor="#F04E98" 
+            className="w-[441px] max-w-full mt-16 max-md:mt-10" 
+          />
+          
+          <button className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-20 rounded-full p-4 flex items-center justify-center hover:bg-opacity-30 transition-all">
+            <Play className="text-white w-8 h-8" />
+          </button>
+        </div>
       </section>
+      
+      {/* Quiz Result Section */}
+      {resultType && resultCards[resultType] && (
+        <section className="justify-center items-stretch flex w-full flex-col bg-[#F04E98] pt-10 pb-[60px] px-8 max-md:max-w-full max-md:px-5">
+          <ResultCard {...resultCards[resultType]} />
+        </section>
+      )}
 
       <section className="items-stretch flex w-full flex-col bg-[#F6F0D8] px-8 py-[116px] max-md:max-w-full max-md:px-5 max-md:py-[100px]">
         <div className="flex w-full flex-col items-center text-center max-md:max-w-full">
