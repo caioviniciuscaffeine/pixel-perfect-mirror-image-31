@@ -1,3 +1,4 @@
+
 import React from "react";
 import ResultCard from "./ResultCard";
 import CTAButton from "./CTAButton";
@@ -23,12 +24,14 @@ interface ResultCardData {
 
 interface LPDesktopProps {
   showAllResults?: boolean;
+  showResultInHeroSection?: boolean;
   resultType?: "success" | "warning" | "danger" | null;
   resultCards?: Record<string, ResultCardData>;
 }
 
 export const LPDesktop: React.FC<LPDesktopProps> = ({ 
   showAllResults = true, 
+  showResultInHeroSection = false,
   resultType = null,
   resultCards = {}
 }) => {
@@ -114,8 +117,8 @@ export const LPDesktop: React.FC<LPDesktopProps> = ({
         </div>
       </section>
       
-      {/* Quiz Result Section */}
-      {resultType && resultCards[resultType] && (
+      {/* Quiz Result Section - Now conditionally render based on showResultInHeroSection */}
+      {resultType && resultCards[resultType] && showResultInHeroSection && (
         <section className="justify-center items-stretch flex w-full flex-col bg-[#F04E98] pt-10 pb-[60px] px-8 max-md:max-w-full max-md:px-5">
           <ResultCard {...resultCards[resultType]} />
         </section>
