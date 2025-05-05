@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import LPDesktop from "@/components/landing-page/LPDesktop";
-import ResultCard from "@/components/landing-page/ResultCard";
 
 // Define result card data
 const resultCards = {
@@ -123,7 +122,6 @@ const resultCards = {
 
 const Index: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const [showHeader, setShowHeader] = useState(true);
   const resultType = searchParams.get("result") as "success" | "warning" | "danger" | null;
 
   useEffect(() => {
@@ -142,8 +140,7 @@ const Index: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Remove the result card from here as we'll display it in LPDesktop */}
-      <LPDesktop showAllResults={false} resultType={resultType} resultCards={resultCards} />
+      <LPDesktop showResultInHeroSection={true} resultType={resultType} resultCards={resultCards} />
     </div>
   );
 };
