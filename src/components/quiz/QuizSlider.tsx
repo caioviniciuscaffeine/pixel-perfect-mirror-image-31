@@ -3,7 +3,7 @@ import React from "react";
 
 interface QuizSliderOptionProps {
   value: string;
-  label: string;
+  label: React.ReactNode;
   points: number;
 }
 
