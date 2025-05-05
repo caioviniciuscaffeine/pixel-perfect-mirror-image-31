@@ -4,7 +4,149 @@ import CTAButton from "./CTAButton";
 import SignalCard from "./SignalCard";
 import TopicItem from "./TopicItem";
 
-export const LPDesktop: React.FC = () => {
+interface LPDesktopProps {
+  showAllResults?: boolean;
+  resultType?: "success" | "warning" | "danger" | null;
+}
+
+export const LPDesktop: React.FC<LPDesktopProps> = ({ showAllResults = true, resultType = null }) => {
+  // Define result card data
+  const resultCards = {
+    success: {
+      status: "success" as const,
+      icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/e31516efbc660cf3bc328395aa302fa9d515573b?placeholderIfAbsent=true",
+      title: "Imune ON!",
+      description: (
+        <>
+          Parabéns,{" "}
+          <span className="font-bold">
+            sua imunidade está em dia!
+          </span>{" "}
+          Seu corpo está mostrando que você tem mantido bons hábitos e
+          cuidando bem da sua saúde.
+        </>
+      ),
+      tips: [
+        {
+          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/ac138dbec31241cb9b0fd64c698048fb905e830e?placeholderIfAbsent=true",
+          text: "Mantenha uma alimentação equilibrada.",
+        },
+        {
+          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/2c12bba42edefa54febb179a0d3df9206883c054?placeholderIfAbsent=true",
+          text: "Beba bastante água ao longo do dia.",
+        },
+        {
+          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/8b59dca174e15552c102ee80564874571f5ada52?placeholderIfAbsent=true",
+          text: "Siga praticando atividade física com frequência.",
+        },
+      ],
+      productImage: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/79beca27cdaf2f4c9cb42e8d83d980a93773bf1f?placeholderIfAbsent=true",
+      ctaTitle: "Que tal começar o dia nutrindo o corpo com vitaminas, minerais e aminoácidos?",
+      ctaDescription: "Experimente o Morning Shot! Mais do que um shot matinal, Morning Shot é um lembrete diário de autocuidado, que incentiva outros hábitos saudáveis ao longo do dia.",
+      bgColor: "#E0F3B3",
+    },
+    warning: {
+      status: "warning" as const,
+      icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/a5db1e968f4fafa0a2851679a878cb89aa8e3dcd?placeholderIfAbsent=true",
+      title: "Zona de Atenção!",
+      description: (
+        <>
+          <span className="font-bold">
+            Sua imunidade está instável
+          </span>
+          , e pode estar precisando de um reforço.
+        </>
+      ),
+      tips: [
+        {
+          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/ac138dbec31241cb9b0fd64c698048fb905e830e?placeholderIfAbsent=true",
+          text: "Priorize alimentos ricos em fibras, vitaminas e minerais.",
+        },
+        {
+          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/2c12bba42edefa54febb179a0d3df9206883c054?placeholderIfAbsent=true",
+          text: "Beba bastante água ao longo do dia.",
+        },
+        {
+          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/c7804d3f2301933032eab040eef6f15063c671a1?placeholderIfAbsent=true",
+          text: "Tente manter uma rotina de sono regular.",
+        },
+      ],
+      productImage: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/79beca27cdaf2f4c9cb42e8d83d980a93773bf1f?placeholderIfAbsent=true",
+      ctaTitle: "Comece com um hábito saboroso e prático: como incluir Morning Shot na sua rotina..",
+      ctaDescription: "O seu aliado matinal que possui ingredientes selecionados que atuam auxiliando o sistema imunológico e combatendo os danos causados por radicais livres.",
+      bgColor: "#FFE3B2",
+    },
+    danger: {
+      status: "danger" as const,
+      icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/ae40d85b737d011c5fa697356d59193a6abc7134?placeholderIfAbsent=true",
+      title: "Imunidade em Alerta!",
+      description: (
+        <>
+          Seu corpo demonstra{" "}
+          <span className="font-bold">sinais de baixa imunidade</span>
+          , e o cansaço constante, gripes frequentes ou baixa disposição
+          são reflexos disso.
+        </>
+      ),
+      tips: [
+        {
+          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/ac138dbec31241cb9b0fd64c698048fb905e830e?placeholderIfAbsent=true",
+          text: (
+            <>
+              <span className="font-bold">
+                Reavalie sua alimentação:
+              </span>{" "}
+              comece incluindo frutas cítricas, vegetais verdes e fontes
+              naturais de zinco e ferro.
+            </>
+          ),
+        },
+        {
+          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/503ee7c7a1ce0e90c45235aacc91547a4a2bcaa8?placeholderIfAbsent=true",
+          text: (
+            <>
+              <span className="font-bold">Cuide da mente:</span> o
+              estresse prolongado pode abalar (muito!) sua imunidade.
+            </>
+          ),
+        },
+        {
+          icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/c7804d3f2301933032eab040eef6f15063c671a1?placeholderIfAbsent=true",
+          text: (
+            <>
+              <span className="font-bold">Dê atenção ao sono:</span>{" "}
+              noites mal dormidas podem enfraquecer suas defesas.
+            </>
+          ),
+        },
+      ],
+      productImage: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/79beca27cdaf2f4c9cb42e8d83d980a93773bf1f?placeholderIfAbsent=true",
+      ctaTitle: "Comece com um hábito savoroso e prático: como incluir Morning Shot na sua rotina..",
+      ctaDescription: "Experimente o Morning Shot! Uma fórmula rica em vitaminas, minerais e aminoácidos que ajudam a fortalecer a imunidade de forma prática e saborosa",
+      bgColor: "#FFCED9",
+    },
+  };
+
+  // Determine which result cards to render based on props
+  const renderResultCards = () => {
+    if (showAllResults) {
+      // In preview mode, show all results
+      return Object.keys(resultCards).map((key) => {
+        const cardType = key as "success" | "warning" | "danger";
+        return (
+          <section key={cardType} className="justify-center items-stretch flex w-full flex-col bg-[#F04E98] pt-10 pb-[88px] px-8 max-md:max-w-full max-md:px-5">
+            <ResultCard {...resultCards[cardType]} />
+          </section>
+        );
+      });
+    } else if (resultType && resultCards[resultType]) {
+      // Only show the specific result
+      return null; // We're already showing the result in the Index component
+    }
+    
+    return null;
+  };
+
   return (
     <div className="overflow-hidden rounded-2xl">
       <header className="items-center flex w-full flex-col justify-center bg-white p-4 max-md:max-w-full">
@@ -15,127 +157,7 @@ export const LPDesktop: React.FC = () => {
         />
       </header>
 
-      <section className="justify-center items-stretch flex w-full flex-col bg-[#F04E98] pt-10 pb-[88px] px-8 max-md:max-w-full max-md:px-5">
-        <ResultCard
-          status="success"
-          icon="https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/e31516efbc660cf3bc328395aa302fa9d515573b?placeholderIfAbsent=true"
-          title="Imune ON!"
-          description={
-            <>
-              Parabéns,{" "}
-              <span className="font-bold">
-                sua imunidade está em dia!
-              </span>
-              Seu corpo está mostrando que você tem mantido bons hábitos e
-              cuidando bem da sua saúde.
-            </>
-          }
-          tips={[
-            {
-              icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/ac138dbec31241cb9b0fd64c698048fb905e830e?placeholderIfAbsent=true",
-              text: "Mantenha uma alimentação equilibrada.",
-            },
-            {
-              icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/2c12bba42edefa54febb179a0d3df9206883c054?placeholderIfAbsent=true",
-              text: "Beba bastante água ao longo do dia.",
-            },
-            {
-              icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/8b59dca174e15552c102ee80564874571f5ada52?placeholderIfAbsent=true",
-              text: "Siga praticando atividade física com frequência.",
-            },
-          ]}
-          productImage="https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/79beca27cdaf2f4c9cb42e8d83d980a93773bf1f?placeholderIfAbsent=true"
-          ctaTitle="Que tal começar o dia nutrindo o corpo com vitaminas, minerais e aminoácidos?"
-          ctaDescription="Experimente o Morning Shot! Mais do que um shot matinal, Morning Shot é um lembrete diário de autocuidado, que incentiva outros hábitos saudáveis ao longo do dia."
-          bgColor="#E0F3B3"
-        />
-      </section>
-
-      <section className="justify-center items-stretch flex w-full flex-col bg-[#F04E98] pt-10 pb-[88px] px-8 max-md:max-w-full max-md:px-5">
-        <ResultCard
-          status="warning"
-          icon="https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/a5db1e968f4fafa0a2851679a878cb89aa8e3dcd?placeholderIfAbsent=true"
-          title="Zona de Atenção!"
-          description={
-            <>
-              <span className="font-bold">
-                Sua imunidade está instável
-              </span>
-              , e pode estar precisando de um reforço.
-            </>
-          }
-          tips={[
-            {
-              icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/ac138dbec31241cb9b0fd64c698048fb905e830e?placeholderIfAbsent=true",
-              text: "Priorize alimentos ricos em fibras, vitaminas e minerais.",
-            },
-            {
-              icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/2c12bba42edefa54febb179a0d3df9206883c054?placeholderIfAbsent=true",
-              text: "Beba bastante água ao longo do dia.",
-            },
-            {
-              icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/c7804d3f2301933032eab040eef6f15063c671a1?placeholderIfAbsent=true",
-              text: "Tente manter uma rotina de sono regular.",
-            },
-          ]}
-          productImage="https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/79beca27cdaf2f4c9cb42e8d83d980a93773bf1f?placeholderIfAbsent=true"
-          ctaTitle="Comece com um hábito saboroso e prático: como incluir Morning Shot na sua rotina.."
-          ctaDescription="O seu aliado matinal que possui ingredientes selecionados que atuam auxiliando o sistema imunológico e combatendo os danos causados por radicais livres."
-          bgColor="#FFE3B2"
-        />
-      </section>
-
-      <section className="justify-center items-stretch flex w-full flex-col bg-[#F04E98] pt-10 pb-[88px] px-8 max-md:max-w-full max-md:px-5">
-        <ResultCard
-          status="danger"
-          icon="https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/ae40d85b737d011c5fa697356d59193a6abc7134?placeholderIfAbsent=true"
-          title="Imunidade em Alerta!"
-          description={
-            <>
-              Seu corpo demonstra{" "}
-              <span className="font-bold">sinais de baixa imunidade</span>
-              , e o cansaço constante, gripes frequentes ou baixa disposição
-              são reflexos disso.
-            </>
-          }
-          tips={[
-            {
-              icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/ac138dbec31241cb9b0fd64c698048fb905e830e?placeholderIfAbsent=true",
-              text: (
-                <>
-                  <span className="font-bold">
-                    Reavalie sua alimentação:
-                  </span>{" "}
-                  comece incluindo frutas cítricas, vegetais verdes e fontes
-                  naturais de zinco e ferro.
-                </>
-              ),
-            },
-            {
-              icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/503ee7c7a1ce0e90c45235aacc91547a4a2bcaa8?placeholderIfAbsent=true",
-              text: (
-                <>
-                  <span className="font-bold">Cuide da mente:</span> o
-                  estresse prolongado pode abalar (muito!) sua imunidade.
-                </>
-              ),
-            },
-            {
-              icon: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/c7804d3f2301933032eab040eef6f15063c671a1?placeholderIfAbsent=true",
-              text: (
-                <>
-                  <span className="font-bold">Dê atenção ao sono:</span>{" "}
-                  noites mal dormidas podem enfraquecer suas defesas.
-                </>
-              ),
-            },
-          ]}
-          productImage="https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/79beca27cdaf2f4c9cb42e8d83d980a93773bf1f?placeholderIfAbsent=true"
-          ctaTitle="Comece com um hábito saboroso e prático: como incluir Morning Shot na sua rotina.."
-          ctaDescription="Experimente o Morning Shot! Uma fórmula rica em vitaminas, minerais e aminoácidos que ajudam a fortalecer a imunidade de forma prática e saborosa"
-          bgColor="#FFCED9"
-        />
-      </section>
+      {renderResultCards()}
 
       <section className="shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex min-h-[600px] w-full flex-col overflow-hidden items-center justify-center px-8 py-[136px] max-md:max-w-full max-md:px-5 max-md:py-[100px] bg-[#F04E98]">
         <div className="relative flex w-[560px] max-w-full flex-col items-center text-center">

@@ -159,7 +159,7 @@ const Index: React.FC = () => {
           <ResultCard {...resultCards[resultType]} />
         </div>
       ) : null}
-      <LPDesktop />
+      <LPDesktop showAllResults={false} resultType={resultType} />
     </div>
   );
 };
