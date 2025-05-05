@@ -96,10 +96,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
               </div>
             </div>
           ))}
-          <div className="text-[#868E96] text-center text-xs font-normal leading-[14px] mt-2.5">
-            Something terrible happened! You made a mistake and there is no
-            going back, your data was lost forever!
-          </div>
+          {/* Removed the error message text */}
         </div>
       </div>
       <div
