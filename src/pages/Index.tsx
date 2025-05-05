@@ -127,10 +127,19 @@ const Index: React.FC = () => {
   const resultType = searchParams.get("result") as "success" | "warning" | "danger" | null;
 
   useEffect(() => {
-    // Remove the error message from the ResultCard component
-    const errorMessage = document.querySelector(".text-[#868E96].text-center.text-xs");
-    if (errorMessage) {
-      errorMessage.textContent = "";
+    // Update the error message approach to not use querySelector with square brackets
+    // as they need to be escaped in CSS selectors
+    try {
+      // Instead of trying to find by class name with special characters,
+      // we can use a more reliable approach or simply remove this code if not needed
+      const errorMessages = document.querySelectorAll(".text-center.text-xs");
+      errorMessages.forEach(element => {
+        if (element.textContent && element.textContent.trim().length > 0) {
+          element.textContent = "";
+        }
+      });
+    } catch (error) {
+      console.log("Error while trying to clear error messages:", error);
     }
   }, []);
 
