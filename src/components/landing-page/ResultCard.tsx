@@ -1,9 +1,10 @@
+
 import React from "react";
 import CTAButton from "./CTAButton";
 
 interface TipItem {
   icon: string;
-  text: string;
+  text: React.ReactNode;
   isBold?: boolean;
 }
 
