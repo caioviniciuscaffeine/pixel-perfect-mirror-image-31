@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import LPDesktop from "@/components/landing-page/LPDesktop";
 
@@ -140,7 +140,11 @@ const Index: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      <LPDesktop showResultInHeroSection={true} resultType={resultType} resultCards={resultCards} />
+      <LPDesktop 
+        showAllResults={false} 
+        resultType={resultType} 
+        resultCards={resultCards} 
+      />
     </div>
   );
 };

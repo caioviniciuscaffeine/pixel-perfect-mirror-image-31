@@ -1,4 +1,3 @@
-
 import React from "react";
 import ResultCard from "./ResultCard";
 import CTAButton from "./CTAButton";
@@ -30,7 +29,7 @@ interface LPDesktopProps {
 }
 
 export const LPDesktop: React.FC<LPDesktopProps> = ({ 
-  showAllResults = true, 
+  showAllResults = false, // Changed to false by default to prevent showing all results
   showResultInHeroSection = false,
   resultType = null,
   resultCards = {}
@@ -47,6 +46,13 @@ export const LPDesktop: React.FC<LPDesktopProps> = ({
           </section>
         );
       });
+    } else if (resultType && resultCards[resultType]) {
+      // Show only the specific result
+      return (
+        <section className="justify-center items-stretch flex w-full flex-col bg-[#F04E98] pt-10 pb-[88px] px-8 max-md:max-w-full max-md:px-5">
+          <ResultCard {...resultCards[resultType]} />
+        </section>
+      );
     }
     
     return null;
@@ -110,20 +116,9 @@ export const LPDesktop: React.FC<LPDesktopProps> = ({
             textColor="#F04E98" 
             className="w-[441px] max-w-full mt-16 max-md:mt-10" 
           />
-          
-          <button className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-20 rounded-full p-4 flex items-center justify-center hover:bg-opacity-30 transition-all">
-            <Play className="text-white w-8 h-8" />
-          </button>
         </div>
       </section>
       
-      {/* Quiz Result Section - Now conditionally render based on showResultInHeroSection */}
-      {resultType && resultCards[resultType] && showResultInHeroSection && (
-        <section className="justify-center items-stretch flex w-full flex-col bg-[#F04E98] pt-10 pb-[60px] px-8 max-md:max-w-full max-md:px-5">
-          <ResultCard {...resultCards[resultType]} />
-        </section>
-      )}
-
       <section className="items-stretch flex w-full flex-col bg-[#F6F0D8] px-8 py-[116px] max-md:max-w-full max-md:px-5 max-md:py-[100px]">
         <div className="flex w-full flex-col items-center text-center max-md:max-w-full">
           <h2 className="text-[#212529] text-[40px] font-semibold leading-[48px] w-[480px] max-md:max-w-full">

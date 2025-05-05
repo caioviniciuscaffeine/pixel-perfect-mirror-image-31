@@ -131,16 +131,16 @@ const Quiz: React.FC = () => {
       );
       
       let resultType;
-      if (totalPoints >= 12 && totalPoints <= 15) {
+      if (totalPoints >= 21 && totalPoints <= 27) {
         resultType = "success"; // Imune ON!
-      } else if (totalPoints >= 8 && totalPoints <= 11) {
+      } else if (totalPoints >= 15 && totalPoints <= 20) {
         resultType = "warning"; // Zona de Atenção!
       } else {
         resultType = "danger"; // Imunidade em Alerta!
       }
       
-      // Navigate to the results page
-      navigate("/?result=" + resultType);
+      // Navigate to the results page with the correct result type
+      navigate(`/?result=${resultType}`);
     }
   };
 
