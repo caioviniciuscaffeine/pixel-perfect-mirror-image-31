@@ -115,7 +115,7 @@ const resultCards = {
       },
     ],
     productImage: "https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/79beca27cdaf2f4c9cb42e8d83d980a93773bf1f?placeholderIfAbsent=true",
-    ctaTitle: "Comece com um hábito saboroso e prático: como incluir Morning Shot na sua rotina.",
+    ctaTitle: "Comece com um hábito savoroso e prático: como incluir Morning Shot na sua rotina.",
     ctaDescription: "Experimente o Morning Shot! Uma fórmula rica em vitaminas, minerais e aminoácidos que ajudam a fortalecer a imunidade de forma prática e saborosa",
     bgColor: "#FFCED9",
   },
@@ -135,7 +135,7 @@ const Index: React.FC = () => {
   }, []);
 
   return (
-    <main className="min-h-screen">
+    <div className="min-h-screen">
       {resultType && resultCards[resultType] ? (
         <div className="bg-[#F04E98] pt-4 pb-8 px-4 md:px-8">
           {showHeader && (
@@ -149,9 +149,9 @@ const Index: React.FC = () => {
           )}
           <ResultCard {...resultCards[resultType]} />
         </div>
-      )}
+      ) : null}
       <LPDesktop />
-    </main>
+    </div>
   );
 };
 
