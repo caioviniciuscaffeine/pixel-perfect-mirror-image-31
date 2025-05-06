@@ -39,26 +39,26 @@ const QuizSlider: React.FC<QuizSliderProps> = ({ options, selectedValue, onSelec
                   : index <= selectedIndex
                   ? "bg-[#97D700]"
                   : "bg-[#DEE2E6]"
-              } ${isMobile ? "w-6 h-6" : "w-4 h-4"}`}
-              style={{ left: `calc(${(index / (options.length - 1)) * 100}% - ${index === 0 ? 0 : index === options.length - 1 ? (isMobile ? 12 : 8) : (isMobile ? 12 : 8) / 2}px)` }}
+              } ${isMobile ? "w-4 h-4" : "w-4 h-4"}`}
+              style={{ left: `calc(${(index / (options.length - 1)) * 100}% - ${index === 0 ? 0 : index === options.length - 1 ? (isMobile ? 8 : 8) : (isMobile ? 8 : 8) / 2}px)` }}
             />
           ))}
         </div>
       </div>
 
       {/* Option labels */}
-      <div className={`flex justify-between ${isMobile ? "mt-8" : "mt-6"}`}>
+      <div className={`flex justify-between ${isMobile ? "mt-6" : "mt-6"}`}>
         {options.map((option) => (
           <button
             key={option.value}
             onClick={() => onSelect(option.value, option.points)}
-            className={`py-1 px-2 rounded-lg text-center text-sm ${isMobile ? "flex-1 mx-1" : ""} ${
+            className={`py-1 px-1 rounded-lg text-center ${isMobile ? "text-xs flex-1 mx-0.5" : "text-sm"} ${
               selectedValue === option.value
                 ? "bg-white border border-[#F04E98] text-[#212529]"
                 : "bg-white border border-[#E9ECEF] text-[#212529] hover:border-[#F04E98]"
             }`}
           >
-            <span className={isMobile ? "text-xs" : ""}>{option.label}</span>
+            <span>{option.label}</span>
           </button>
         ))}
       </div>

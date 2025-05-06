@@ -2,6 +2,7 @@
 import React from "react";
 import QuizOption from "./QuizOption";
 import QuizSlider from "./QuizSlider";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Option {
   value: string;
@@ -24,9 +25,13 @@ const QuizQuestion: React.FC<QuestionProps> = ({
   selectedValue,
   onSelect,
 }) => {
+  const isMobile = useIsMobile();
+  
   return (
     <div className="w-full">
-      <h2 className="text-[32px] font-semibold text-[#212529] leading-tight mb-8">
+      <h2 className={`font-semibold text-[#212529] leading-tight ${
+        isMobile ? "text-xl mb-4" : "text-[32px] mb-8"
+      }`}>
         {question}
       </h2>
 
