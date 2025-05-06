@@ -3,25 +3,35 @@ import React, { useState, useEffect } from "react";
 import Quiz from "@/components/quiz/Quiz";
 import { useIsMobile } from "@/hooks/use-mobile";
 import LoadingScreen from "@/components/quiz/LoadingScreen";
+import QuizIntro from "@/components/quiz/QuizIntro";
 import EmailCapture from "@/components/quiz/EmailCapture";
 
 const QuizPage: React.FC = () => {
   const isMobile = useIsMobile();
-  const [showIntro, setShowIntro] = useState(true);
+  const [loadingState, setLoadingState] = useState<"initial" | "completed">("initial");
+  const [showQuizIntro, setShowQuizIntro] = useState(false);
   const [showEmailCapture, setShowEmailCapture] = useState(false);
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    // If on mobile, simulate a loading time before showing email capture
-    if (isMobile && showIntro) {
+    // If on mobile, show loading screen first, then quiz intro
+    if (isMobile) {
       const timer = setTimeout(() => {
-        setShowIntro(false);
-        setShowEmailCapture(true);
+        setLoadingState("completed");
+        setShowQuizIntro(true);
       }, 2000);
       
       return () => clearTimeout(timer);
+    } else {
+      // On desktop, go straight to quiz
+      setLoadingState("completed");
     }
-  }, [isMobile, showIntro]);
+  }, [isMobile]);
+
+  const handleStartQuiz = () => {
+    setShowQuizIntro(false);
+    setShowEmailCapture(true);
+  };
 
   const handleEmailSubmit = (email: string) => {
     setEmail(email);
@@ -29,8 +39,12 @@ const QuizPage: React.FC = () => {
   };
 
   if (isMobile) {
-    if (showIntro) {
+    if (loadingState === "initial") {
       return <LoadingScreen message="Preparando o seu quiz..." />;
+    }
+    
+    if (showQuizIntro) {
+      return <QuizIntro onStart={handleStartQuiz} />;
     }
     
     if (showEmailCapture) {

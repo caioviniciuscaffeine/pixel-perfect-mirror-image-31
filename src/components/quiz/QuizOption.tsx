@@ -22,11 +22,11 @@ const QuizOption: React.FC<QuizOptionProps> = ({
 
   return (
     <button
-      className={`flex w-full items-center gap-3 rounded-lg border text-left px-4 py-5 transition ${
+      className={`flex w-full items-center gap-3 rounded-lg border text-left px-4 py-5 transition mb-4 ${
         selected
           ? "border-[#F04E98] bg-[#FFF1F7]"
           : "border-[#E9ECEF] bg-white hover:border-[#F04E98]"
-      } ${isMobile ? "mb-4" : ""}`}
+      }`}
       onClick={() => onSelect(value, points)}
     >
       <div

@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import Logo from "./Logo";
 import EmailInput from "./EmailInput";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface EmailCaptureProps {
   onSubmit: (email: string) => void;
@@ -10,7 +9,6 @@ interface EmailCaptureProps {
 
 const EmailCapture: React.FC<EmailCaptureProps> = ({ onSubmit }) => {
   const [email, setEmail] = useState("");
-  const isMobile = useIsMobile();
   
   return (
     <div className="flex flex-col min-h-screen w-full px-4 bg-white">

@@ -5,7 +5,6 @@ import Logo from "./Logo";
 import ProgressBar from "./ProgressBar";
 import QuizQuestion from "./QuizQuestion";
 import NavigationButtons from "./NavigationButtons";
-import QuizIntro from "./QuizIntro";
 import LoadingScreen from "./LoadingScreen";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -123,7 +122,6 @@ interface QuizProps {
 const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [showIntro, setShowIntro] = useState(startWithEmail ? false : true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ [key: string]: { value: string; points: number } }>({});
   const [email, setEmail] = useState(startWithEmail);
@@ -201,7 +199,7 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
 
   const handleStart = async (emailInput: string) => {
     setEmail(emailInput);
-    setShowIntro(false);
+    setCurrentQuestionIndex(0);
     
     // Send email webhook when user starts the quiz
     await sendEmailWebhook(emailInput);
@@ -218,7 +216,7 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
     if (currentQuestionIndex < quizQuestions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      // Show loading screen when calculating result on mobile
+      // Show loading screen when calculating result
       if (isMobile) {
         setLoadingMessage("Gerando seu resultado...");
         setIsSubmitting(true);
@@ -242,7 +240,7 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
       // Send quiz completion webhook
       await sendQuizCompletionWebhook(email, totalPoints, resultType);
       
-      // Add a slight delay before navigation for better mobile UX
+      // Add a delay before navigation for better UX
       setTimeout(() => {
         setIsSubmitting(false);
         // Navigate to the results page with the correct result type
@@ -254,17 +252,11 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
   const handlePrev = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex((prev) => prev - 1);
-    } else {
-      setShowIntro(true);
     }
   };
 
   if (isSubmitting && loadingMessage) {
     return <LoadingScreen message={loadingMessage} />;
-  }
-
-  if (showIntro) {
-    return <QuizIntro onStart={handleStart} />;
   }
 
   const currentQuestion = quizQuestions[currentQuestionIndex];
@@ -283,7 +275,7 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
       </div>
       
       {isMobile && currentQuestion.image && (
-        <div className="w-full h-56 mb-4 overflow-hidden">
+        <div className="w-full h-48 mb-6 overflow-hidden">
           <img 
             src={currentQuestion.image} 
             alt="Question illustration" 

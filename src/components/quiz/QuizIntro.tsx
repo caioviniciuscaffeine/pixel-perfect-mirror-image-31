@@ -6,13 +6,12 @@ import EmailInput from "./EmailInput";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface QuizIntroProps {
-  onStart: (email: string) => void;
+  onStart: () => void;
 }
 
 const QuizIntro: React.FC<QuizIntroProps> = ({
   onStart
 }) => {
-  const [email, setEmail] = useState("");
   const isMobile = useIsMobile();
   
   // Mobile version has a more compact layout
@@ -23,7 +22,7 @@ const QuizIntro: React.FC<QuizIntroProps> = ({
         
         <div className="w-full mt-6">
           <img
-            src="public/lovable-uploads/56fba38a-0040-4210-bbc7-d669583337a6.png"
+            src="/lovable-uploads/9bc385b2-5fb3-41c6-8f09-8c08e3cc0cc6.png"
             alt="Immunity test"
             className="w-full h-64 object-cover"
           />
@@ -55,23 +54,11 @@ const QuizIntro: React.FC<QuizIntroProps> = ({
             </div>
           </div>
         </div>
-        
-        <div className="mt-6">
-          <h3 className="text-2xl font-semibold text-[#212529] mb-4">
-            Antes de continuar, qual o seu melhor e-mail?
-          </h3>
-          <EmailInput value={email} onChange={setEmail} />
-        </div>
-        
-        <div className="w-full mt-6 mb-8">
+
+        <div className="w-full mt-8 mb-8">
           <button
-            onClick={() => onStart(email)}
-            disabled={!email.includes('@')}
-            className={`w-full flex items-center justify-center gap-2 py-4 px-6 rounded-lg text-xl font-medium ${
-              email.includes('@')
-                ? "bg-[#F04E98] text-white"
-                : "bg-[#F8F9FA] text-[#ADB5BD] cursor-not-allowed"
-            }`}
+            onClick={onStart}
+            className="w-full flex items-center justify-center gap-2 py-4 px-6 rounded-lg text-xl font-medium bg-[#F04E98] text-white"
           >
             Responder ao quiz
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -119,14 +106,14 @@ const QuizIntro: React.FC<QuizIntroProps> = ({
         <h3 className="text-[32px] font-semibold text-[#212529] leading-tight mb-6">
           Antes de continuar, qual o seu melhor e-mail?
         </h3>
-        <EmailInput value={email} onChange={setEmail} />
+        <EmailInput value="" onChange={() => {}} />
       </div>
       
       <NavigationButtons 
-        onNext={() => onStart(email)} 
+        onNext={onStart} 
         onPrev={() => {}} 
         nextLabel="Ok, vamos lá" 
-        canProceed={email.includes('@')} 
+        canProceed={true} 
         showPrev={false} 
       />
     </div>
