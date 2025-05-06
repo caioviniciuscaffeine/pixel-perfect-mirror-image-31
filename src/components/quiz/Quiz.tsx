@@ -1,11 +1,16 @@
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { toast } from "sonner";
 import Logo from "./Logo";
 import ProgressBar from "./ProgressBar";
 import QuizQuestion from "./QuizQuestion";
 import NavigationButtons from "./NavigationButtons";
 import QuizIntro from "./QuizIntro";
+
+// Define webhook URLs
+const EMAIL_WEBHOOK_URL = "https://www.caffeinearmy.com.br/";
+const QUIZ_COMPLETION_WEBHOOK_URL = "https://www.caffeinearmy.com.br/";
 
 // Define quiz questions
 const quizQuestions = [
@@ -103,14 +108,86 @@ const quizQuestions = [
 
 const Quiz: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showIntro, setShowIntro] = useState(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ [key: string]: { value: string; points: number } }>({});
   const [email, setEmail] = useState("");
 
-  const handleStart = (email: string) => {
-    setEmail(email);
+  // Extract UTM parameters from URL
+  const getUtmParams = () => {
+    const searchParams = new URLSearchParams(location.search);
+    const utmParams: Record<string, string> = {};
+    
+    // Common UTM parameters
+    const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+    
+    utmKeys.forEach(key => {
+      const value = searchParams.get(key);
+      if (value) {
+        utmParams[key] = value;
+      }
+    });
+    
+    return utmParams;
+  };
+
+  const sendEmailWebhook = async (email: string) => {
+    try {
+      const utmParams = getUtmParams();
+      
+      await fetch(EMAIL_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          ...utmParams,
+          timestamp: new Date().toISOString(),
+          source: 'quiz_email_submission'
+        }),
+        mode: 'no-cors' // Using no-cors to handle CORS restrictions
+      });
+      
+      console.log('Email webhook sent successfully');
+    } catch (error) {
+      console.error('Error sending email webhook:', error);
+      toast.error('Houve um erro ao processar seu e-mail, mas você pode continuar o quiz.');
+    }
+  };
+
+  const sendQuizCompletionWebhook = async (email: string, score: number, resultType: string) => {
+    try {
+      await fetch(QUIZ_COMPLETION_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          score,
+          resultType,
+          answers,
+          timestamp: new Date().toISOString(),
+          source: 'quiz_completion'
+        }),
+        mode: 'no-cors' // Using no-cors to handle CORS restrictions
+      });
+      
+      console.log('Quiz completion webhook sent successfully');
+    } catch (error) {
+      console.error('Error sending quiz completion webhook:', error);
+      // Continue with navigation even if webhook fails
+    }
+  };
+
+  const handleStart = async (emailInput: string) => {
+    setEmail(emailInput);
     setShowIntro(false);
+    
+    // Send email webhook when user starts the quiz
+    await sendEmailWebhook(emailInput);
   };
 
   const handleSelectOption = (questionId: string, value: string, points: number) => {
@@ -120,7 +197,7 @@ const Quiz: React.FC = () => {
     }));
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentQuestionIndex < quizQuestions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
@@ -138,6 +215,9 @@ const Quiz: React.FC = () => {
       } else {
         resultType = "danger"; // Imunidade em Alerta!
       }
+      
+      // Send quiz completion webhook
+      await sendQuizCompletionWebhook(email, totalPoints, resultType);
       
       // Navigate to the results page with the correct result type
       navigate(`/?result=${resultType}`);

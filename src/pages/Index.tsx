@@ -1,6 +1,6 @@
 
 import React, { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import LPDesktop from "@/components/landing-page/LPDesktop";
 
 // Define result card data
@@ -122,9 +122,16 @@ const resultCards = {
 
 const Index: React.FC = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const resultType = searchParams.get("result") as "success" | "warning" | "danger" | null;
 
   useEffect(() => {
+    // Redirect to quiz if no result parameter is present
+    if (!resultType) {
+      navigate('/quiz');
+      return;
+    }
+
     try {
       // Use querySelectorAll with simpler class selector
       const errorMessages = document.querySelectorAll(".text-center.text-xs");
@@ -136,7 +143,12 @@ const Index: React.FC = () => {
     } catch (error) {
       console.log("Error while trying to clear error messages:", error);
     }
-  }, []);
+  }, [resultType, navigate]);
+
+  // If being redirected, don't render content
+  if (!resultType) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen">
