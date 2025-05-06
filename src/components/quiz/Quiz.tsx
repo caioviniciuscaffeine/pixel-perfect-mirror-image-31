@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
@@ -117,13 +116,17 @@ const quizQuestions = [
   },
 ];
 
-const Quiz: React.FC = () => {
+interface QuizProps {
+  startWithEmail?: string;
+}
+
+const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(startWithEmail ? false : true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ [key: string]: { value: string; points: number } }>({});
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(startWithEmail);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
   const isMobile = useIsMobile();
@@ -198,22 +201,10 @@ const Quiz: React.FC = () => {
 
   const handleStart = async (emailInput: string) => {
     setEmail(emailInput);
+    setShowIntro(false);
     
-    if (isMobile) {
-      setLoadingMessage("Preparando o seu quiz...");
-      setIsSubmitting(true);
-      
-      // Simulate loading for a better user experience
-      setTimeout(async () => {
-        await sendEmailWebhook(emailInput);
-        setIsSubmitting(false);
-        setShowIntro(false);
-      }, 2000);
-    } else {
-      setShowIntro(false);
-      // Send email webhook when user starts the quiz
-      await sendEmailWebhook(emailInput);
-    }
+    // Send email webhook when user starts the quiz
+    await sendEmailWebhook(emailInput);
   };
 
   const handleSelectOption = (questionId: string, value: string, points: number) => {
@@ -251,17 +242,12 @@ const Quiz: React.FC = () => {
       // Send quiz completion webhook
       await sendQuizCompletionWebhook(email, totalPoints, resultType);
       
-      if (isMobile) {
-        // Add a slight delay before navigation for better mobile UX
-        setTimeout(() => {
-          setIsSubmitting(false);
-          // Navigate to the results page with the correct result type
-          navigate(`/?result=${resultType}`);
-        }, 2000);
-      } else {
-        // Navigate directly on desktop
+      // Add a slight delay before navigation for better mobile UX
+      setTimeout(() => {
+        setIsSubmitting(false);
+        // Navigate to the results page with the correct result type
         navigate(`/?result=${resultType}`);
-      }
+      }, 2000);
     }
   };
 

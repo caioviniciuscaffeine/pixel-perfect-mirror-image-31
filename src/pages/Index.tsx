@@ -140,7 +140,7 @@ const Index: React.FC = () => {
     if (isMobile) {
       const timer = setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 1500);
       return () => clearTimeout(timer);
     } else {
       setLoading(false);

@@ -1,16 +1,46 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Quiz from "@/components/quiz/Quiz";
 import { useIsMobile } from "@/hooks/use-mobile";
+import LoadingScreen from "@/components/quiz/LoadingScreen";
+import EmailCapture from "@/components/quiz/EmailCapture";
 
 const QuizPage: React.FC = () => {
   const isMobile = useIsMobile();
+  const [showIntro, setShowIntro] = useState(true);
+  const [showEmailCapture, setShowEmailCapture] = useState(false);
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    // If on mobile, simulate a loading time before showing email capture
+    if (isMobile && showIntro) {
+      const timer = setTimeout(() => {
+        setShowIntro(false);
+        setShowEmailCapture(true);
+      }, 2000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isMobile, showIntro]);
+
+  const handleEmailSubmit = (email: string) => {
+    setEmail(email);
+    setShowEmailCapture(false);
+  };
 
   if (isMobile) {
+    if (showIntro) {
+      return <LoadingScreen message="Preparando o seu quiz..." />;
+    }
+    
+    if (showEmailCapture) {
+      return <EmailCapture onSubmit={handleEmailSubmit} />;
+    }
+
     return (
       <div className="flex min-h-screen w-full bg-white">
         <div className="w-full px-2 py-4">
-          <Quiz />
+          <Quiz startWithEmail={email} />
         </div>
       </div>
     );

@@ -22,7 +22,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
 
   if (isMobile) {
     return (
-      <div className="flex gap-4 w-full mt-4 fixed bottom-0 left-0 p-4 bg-white">
+      <div className="flex gap-4 w-full fixed bottom-0 left-0 p-4 bg-white">
         {showPrev && (
           <button
             onClick={onPrev}
