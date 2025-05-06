@@ -1,8 +1,21 @@
 
 import React from "react";
 import Quiz from "@/components/quiz/Quiz";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const QuizPage: React.FC = () => {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <div className="flex min-h-screen w-full bg-white">
+        <div className="w-full px-2 py-4">
+          <Quiz />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen w-full">
       <div className="w-full md:w-1/2 p-8 flex items-center justify-center">

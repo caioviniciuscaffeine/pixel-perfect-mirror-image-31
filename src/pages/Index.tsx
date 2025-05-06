@@ -1,7 +1,9 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import LPDesktop from "@/components/landing-page/LPDesktop";
+import LoadingScreen from "@/components/quiz/LoadingScreen";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Define result card data
 const resultCards = {
@@ -124,12 +126,24 @@ const Index: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const resultType = searchParams.get("result") as "success" | "warning" | "danger" | null;
+  const [loading, setLoading] = useState(true);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // Redirect to quiz if no result parameter is present
     if (!resultType) {
       navigate('/quiz');
       return;
+    }
+
+    // Simulate loading for mobile
+    if (isMobile) {
+      const timer = setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else {
+      setLoading(false);
     }
 
     try {
@@ -143,11 +157,15 @@ const Index: React.FC = () => {
     } catch (error) {
       console.log("Error while trying to clear error messages:", error);
     }
-  }, [resultType, navigate]);
+  }, [resultType, navigate, isMobile]);
 
   // If being redirected, don't render content
   if (!resultType) {
     return null;
+  }
+
+  if (loading && isMobile) {
+    return <LoadingScreen message="Gerando seu resultado..." />;
   }
 
   return (
