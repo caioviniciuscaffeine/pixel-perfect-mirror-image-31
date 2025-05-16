@@ -22,7 +22,7 @@ const QuizOption: React.FC<QuizOptionProps> = ({
 
   return (
     <button
-      className={`flex w-full items-center gap-3 rounded-lg border text-left px-3 py-3 md:px-4 md:py-5 transition mb-3 md:mb-4 ${
+      className={`flex w-full items-center gap-3 rounded-lg border text-left px-3 py-2 md:px-4 md:py-4 transition mb-3 md:mb-4 ${
         selected
           ? "border-[#F04E98] bg-[#FFF1F7]"
           : "border-[#E9ECEF] bg-white hover:border-[#F04E98]"

@@ -29,13 +29,13 @@ const QuizQuestion: React.FC<QuestionProps> = ({
   
   return (
     <div className="w-full">
-      <h2 className="text-xl md:text-[32px] font-semibold text-[#212529] leading-tight mb-4 md:mb-8">
+      <h2 className="text-lg md:text-[28px] font-semibold text-[#212529] leading-tight mb-3 md:mb-6">
         {question}
       </h2>
 
-      <div className="max-h-[60vh] md:max-h-none overflow-y-auto md:overflow-visible pb-4">
+      <div className="max-h-[50vh] md:max-h-none overflow-y-auto md:overflow-visible pb-4">
         {type === "options" ? (
-          <div className="space-y-2 md:space-y-4">
+          <div className="space-y-2 md:space-y-3">
             {options.map((option) => (
               <QuizOption
                 key={option.value}

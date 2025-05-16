@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
@@ -143,6 +144,7 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
 
   const sendWebhook = async (data: any) => {
     try {
+      // Using fetch with mode: 'no-cors' to handle CORS restrictions
       await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: {
@@ -251,10 +253,10 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
   const canProceed = answers[questionId] !== undefined;
 
   return (
-    <div className="flex flex-col w-full max-w-[700px] mx-auto">
+    <div className="flex flex-col w-full max-w-[600px] mx-auto">
       <Logo />
       
-      <div className="mt-4 mb-6">
+      <div className="mt-3 mb-4">
         <ProgressBar 
           currentStep={currentQuestionIndex + 1} 
           totalSteps={quizQuestions.length} 
@@ -262,7 +264,7 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
       </div>
       
       {currentQuestion.image && (
-        <div className="w-full h-48 mb-6 overflow-hidden">
+        <div className="w-full h-36 md:h-48 mb-4 md:mb-6 overflow-hidden">
           <img 
             src={currentQuestion.image} 
             alt="Question illustration" 

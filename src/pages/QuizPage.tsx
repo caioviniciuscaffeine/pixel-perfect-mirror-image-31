@@ -48,7 +48,7 @@ const QuizPage: React.FC = () => {
   // For both mobile and desktop, show the quiz with the same layout
   return (
     <div className="flex min-h-screen w-full bg-white">
-      <div className="w-full md:w-1/2 p-4 md:p-8 flex items-center justify-center">
+      <div className="w-full md:w-1/2 p-4 md:p-6 flex items-center justify-center">
         <Quiz startWithEmail={email} />
       </div>
       <div className="hidden md:block md:w-1/2 bg-cover bg-center" style={{ 

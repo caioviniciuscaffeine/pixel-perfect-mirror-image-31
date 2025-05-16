@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import LPDesktop from "@/components/landing-page/LPDesktop";
@@ -135,7 +136,7 @@ const Index: React.FC = () => {
       return;
     }
 
-    // Show loading for all devices briefly for better UX
+    // Show loading briefly for better UX
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1500);
