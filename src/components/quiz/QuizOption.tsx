@@ -23,7 +23,7 @@ const QuizOption: React.FC<QuizOptionProps> = ({
   return (
     <button
       className={`flex w-full items-center gap-3 rounded-lg border text-left px-4 ${
-        isMobile ? "py-3 mb-3" : "py-5 mb-4"
+        isMobile ? "py-2 mb-2" : "py-5 mb-4"
       } transition ${
         selected
           ? "border-[#F04E98] bg-[#FFF1F7]"
@@ -38,7 +38,7 @@ const QuizOption: React.FC<QuizOptionProps> = ({
       >
         {selected && <Check className={`${isMobile ? "h-3 w-3" : "h-4 w-4"} text-white`} />}
       </div>
-      <div className={`text-[#495057] ${isMobile ? "text-sm" : "text-base"}`}>{label}</div>
+      <div className={`text-[#495057] ${isMobile ? "text-xs" : "text-base"}`}>{label}</div>
     </button>
   );
 };
