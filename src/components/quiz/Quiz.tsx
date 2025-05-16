@@ -216,9 +216,11 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
     if (currentQuestionIndex < quizQuestions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      // Show loading screen when calculating result for both mobile and desktop
-      setLoadingMessage("Gerando seu resultado...");
-      setIsSubmitting(true);
+      // Show loading screen when calculating result
+      if (isMobile) {
+        setLoadingMessage("Gerando seu resultado...");
+        setIsSubmitting(true);
+      }
       
       // Calculate score and navigate to result
       const totalPoints = Object.values(answers).reduce(
@@ -227,9 +229,9 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
       );
       
       let resultType;
-      if (totalPoints >= 21) {
+      if (totalPoints >= 21 && totalPoints <= 27) {
         resultType = "success"; // Imune ON!
-      } else if (totalPoints >= 15) {
+      } else if (totalPoints >= 15 && totalPoints <= 20) {
         resultType = "warning"; // Zona de Atenção!
       } else {
         resultType = "danger"; // Imunidade em Alerta!

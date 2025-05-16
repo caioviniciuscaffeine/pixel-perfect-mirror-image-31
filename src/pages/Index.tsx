@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import LPDesktop from "@/components/landing-page/LPDesktop";
@@ -135,11 +136,15 @@ const Index: React.FC = () => {
       return;
     }
 
-    // Show loading screen for both mobile and desktop while preparing results
-    const timer = setTimeout(() => {
+    // Simulate loading for mobile
+    if (isMobile) {
+      const timer = setTimeout(() => {
+        setLoading(false);
+      }, 1500);
+      return () => clearTimeout(timer);
+    } else {
       setLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
+    }
 
     try {
       // Use querySelectorAll with simpler class selector
@@ -159,7 +164,7 @@ const Index: React.FC = () => {
     return null;
   }
 
-  if (loading) {
+  if (loading && isMobile) {
     return <LoadingScreen message="Gerando seu resultado..." />;
   }
 
