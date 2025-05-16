@@ -22,7 +22,7 @@ const QuizOption: React.FC<QuizOptionProps> = ({
 
   return (
     <button
-      className={`flex w-full items-center gap-3 rounded-lg border text-left px-4 py-5 transition mb-4 ${
+      className={`flex w-full items-center gap-3 rounded-lg border text-left px-3 py-3 md:px-4 md:py-5 transition mb-3 md:mb-4 ${
         selected
           ? "border-[#F04E98] bg-[#FFF1F7]"
           : "border-[#E9ECEF] bg-white hover:border-[#F04E98]"
@@ -30,13 +30,13 @@ const QuizOption: React.FC<QuizOptionProps> = ({
       onClick={() => onSelect(value, points)}
     >
       <div
-        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${
+        className={`flex h-5 w-5 md:h-6 md:w-6 shrink-0 items-center justify-center rounded-full ${
           selected ? "bg-[#F04E98]" : "bg-[#F8F9FA]"
         }`}
       >
-        {selected && <Check className="h-4 w-4 text-white" />}
+        {selected && <Check className="h-3 w-3 md:h-4 md:w-4 text-white" />}
       </div>
-      <div className="text-[#495057] text-base">{label}</div>
+      <div className="text-[#495057] text-sm md:text-base">{label}</div>
     </button>
   );
 };

@@ -8,9 +8,8 @@ import NavigationButtons from "./NavigationButtons";
 import LoadingScreen from "./LoadingScreen";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-// Define webhook URLs
-const EMAIL_WEBHOOK_URL = "https://www.caffeinearmy.com.br/";
-const QUIZ_COMPLETION_WEBHOOK_URL = "https://www.caffeinearmy.com.br/";
+// Define webhook URL
+const WEBHOOK_URL = "https://hook.us1.make.com/c9qja1elcrvps5o1st3p83uzrkiccxlv";
 
 // Define quiz questions
 const quizQuestions = [
@@ -129,72 +128,62 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
   const [loadingMessage, setLoadingMessage] = useState("");
   const isMobile = useIsMobile();
 
-  // Extract UTM parameters from URL
-  const getUtmParams = () => {
+  // Extract UTM parameters and other query params from URL
+  const getSourceParams = () => {
     const searchParams = new URLSearchParams(location.search);
-    const utmParams: Record<string, string> = {};
+    const params: Record<string, string> = {};
     
-    // Common UTM parameters
-    const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+    // Get all URL parameters
+    for (const [key, value] of searchParams.entries()) {
+      params[key] = value;
+    }
     
-    utmKeys.forEach(key => {
-      const value = searchParams.get(key);
-      if (value) {
-        utmParams[key] = value;
-      }
-    });
-    
-    return utmParams;
+    return params;
+  };
+
+  const sendWebhook = async (data: any) => {
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        mode: 'no-cors' // Using no-cors to handle CORS restrictions
+      });
+      
+      console.log('Webhook sent successfully');
+      return true;
+    } catch (error) {
+      console.error('Error sending webhook:', error);
+      toast.error('Houve um erro ao processar seus dados, mas você pode continuar o quiz.');
+      return false;
+    }
   };
 
   const sendEmailWebhook = async (email: string) => {
-    try {
-      const utmParams = getUtmParams();
-      
-      await fetch(EMAIL_WEBHOOK_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          ...utmParams,
-          timestamp: new Date().toISOString(),
-          source: 'quiz_email_submission'
-        }),
-        mode: 'no-cors' // Using no-cors to handle CORS restrictions
-      });
-      
-      console.log('Email webhook sent successfully');
-    } catch (error) {
-      console.error('Error sending email webhook:', error);
-      toast.error('Houve um erro ao processar seu e-mail, mas você pode continuar o quiz.');
-    }
+    const sourceParams = getSourceParams();
+    
+    await sendWebhook({
+      email,
+      ...sourceParams,
+      timestamp: new Date().toISOString(),
+      source: 'quiz_email_submission'
+    });
   };
 
   const sendQuizCompletionWebhook = async (email: string, score: number, resultType: string) => {
-    try {
-      await fetch(QUIZ_COMPLETION_WEBHOOK_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          score,
-          resultType,
-          answers,
-          timestamp: new Date().toISOString(),
-          source: 'quiz_completion'
-        }),
-        mode: 'no-cors' // Using no-cors to handle CORS restrictions
-      });
-      
-      console.log('Quiz completion webhook sent successfully');
-    } catch (error) {
-      console.error('Error sending quiz completion webhook:', error);
-      // Continue with navigation even if webhook fails
-    }
+    const sourceParams = getSourceParams();
+    
+    await sendWebhook({
+      email,
+      score,
+      result: resultType,
+      answers,
+      ...sourceParams,
+      timestamp: new Date().toISOString(),
+      source: 'quiz_completion'
+    });
   };
 
   const handleStart = async (emailInput: string) => {
@@ -216,13 +205,11 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
     if (currentQuestionIndex < quizQuestions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      // Show loading screen when calculating result
-      if (isMobile) {
-        setLoadingMessage("Gerando seu resultado...");
-        setIsSubmitting(true);
-      }
+      // Show loading screen when calculating result for all devices
+      setLoadingMessage("Gerando seu resultado...");
+      setIsSubmitting(true);
       
-      // Calculate score and navigate to result
+      // Calculate score and determine result type
       const totalPoints = Object.values(answers).reduce(
         (sum, answer) => sum + answer.points,
         0
@@ -274,7 +261,7 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
         />
       </div>
       
-      {isMobile && currentQuestion.image && (
+      {currentQuestion.image && (
         <div className="w-full h-48 mb-6 overflow-hidden">
           <img 
             src={currentQuestion.image} 

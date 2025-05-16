@@ -10,6 +10,12 @@ interface EmailCaptureProps {
 const EmailCapture: React.FC<EmailCaptureProps> = ({ onSubmit }) => {
   const [email, setEmail] = useState("");
   
+  const handleSubmit = () => {
+    if (email && email.includes('@')) {
+      onSubmit(email);
+    }
+  };
+  
   return (
     <div className="flex flex-col min-h-screen w-full px-4 bg-white">
       <Logo />
@@ -23,13 +29,13 @@ const EmailCapture: React.FC<EmailCaptureProps> = ({ onSubmit }) => {
           Qual o seu melhor e-mail?
         </p>
         
-        <div className="w-full">
+        <div className="w-full max-w-md">
           <EmailInput value={email} onChange={setEmail} />
         </div>
         
-        <div className="w-full mt-6">
+        <div className="w-full max-w-md mt-6">
           <button
-            onClick={() => onSubmit(email)}
+            onClick={handleSubmit}
             disabled={!email.includes('@')}
             className={`w-full flex items-center justify-center gap-2 py-4 px-6 rounded-lg text-xl font-medium ${
               email.includes('@')

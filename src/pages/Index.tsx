@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import LPDesktop from "@/components/landing-page/LPDesktop";
@@ -136,35 +135,19 @@ const Index: React.FC = () => {
       return;
     }
 
-    // Simulate loading for mobile
-    if (isMobile) {
-      const timer = setTimeout(() => {
-        setLoading(false);
-      }, 1500);
-      return () => clearTimeout(timer);
-    } else {
+    // Show loading for all devices briefly for better UX
+    const timer = setTimeout(() => {
       setLoading(false);
-    }
-
-    try {
-      // Use querySelectorAll with simpler class selector
-      const errorMessages = document.querySelectorAll(".text-center.text-xs");
-      errorMessages.forEach(element => {
-        if (element.textContent && element.textContent.trim().length > 0) {
-          element.textContent = "";
-        }
-      });
-    } catch (error) {
-      console.log("Error while trying to clear error messages:", error);
-    }
-  }, [resultType, navigate, isMobile]);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [resultType, navigate]);
 
   // If being redirected, don't render content
   if (!resultType) {
     return null;
   }
 
-  if (loading && isMobile) {
+  if (loading) {
     return <LoadingScreen message="Gerando seu resultado..." />;
   }
 
