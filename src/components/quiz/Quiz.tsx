@@ -227,9 +227,9 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
       );
       
       let resultType;
-      if (totalPoints >= 21 && totalPoints <= 27) {
+      if (totalPoints >= 21) {
         resultType = "success"; // Imune ON!
-      } else if (totalPoints >= 15 && totalPoints <= 20) {
+      } else if (totalPoints >= 15) {
         resultType = "warning"; // Zona de Atenção!
       } else {
         resultType = "danger"; // Imunidade em Alerta!

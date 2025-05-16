@@ -1,9 +1,9 @@
+
 import React from "react";
 import ResultCard from "./ResultCard";
 import CTAButton from "./CTAButton";
 import SignalCard from "./SignalCard";
 import TopicItem from "./TopicItem";
-import { Play } from "lucide-react";
 
 interface ResultCardData {
   status: "success" | "warning" | "danger";
@@ -29,7 +29,7 @@ interface LPDesktopProps {
 }
 
 export const LPDesktop: React.FC<LPDesktopProps> = ({ 
-  showAllResults = false, // Changed to false by default to prevent showing all results
+  showAllResults = false,
   showResultInHeroSection = false,
   resultType = null,
   resultCards = {}

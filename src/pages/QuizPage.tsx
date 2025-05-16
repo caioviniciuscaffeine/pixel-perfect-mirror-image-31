@@ -46,25 +46,23 @@ const QuizPage: React.FC = () => {
   }
 
   // Render the same quiz view for both mobile and desktop
-  if (isMobile) {
-    return (
-      <div className="flex min-h-screen w-full bg-white">
+  return (
+    <div className="flex min-h-screen w-full bg-white">
+      {isMobile ? (
         <div className="w-full px-2 py-4">
           <Quiz startWithEmail={email} />
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex min-h-screen w-full">
-      <div className="w-full md:w-1/2 p-8 flex items-center justify-center">
-        <Quiz startWithEmail={email} />
-      </div>
-      <div className="hidden md:block md:w-1/2 bg-cover bg-center" style={{ 
-        backgroundImage: "url('https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/148d5693-c767-4219-96a3-139690352b82.png?placeholderIfAbsent=true')" 
-      }}>
-      </div>
+      ) : (
+        <div className="flex min-h-screen w-full">
+          <div className="w-full md:w-1/2 p-8 flex items-center justify-center">
+            <Quiz startWithEmail={email} />
+          </div>
+          <div className="hidden md:block md:w-1/2 bg-cover bg-center" style={{ 
+            backgroundImage: "url('https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/148d5693-c767-4219-96a3-139690352b82.png?placeholderIfAbsent=true')" 
+          }}>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
