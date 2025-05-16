@@ -14,19 +14,14 @@ const QuizPage: React.FC = () => {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    // If on mobile, show loading screen first, then quiz intro
-    if (isMobile) {
-      const timer = setTimeout(() => {
-        setLoadingState("completed");
-        setShowQuizIntro(true);
-      }, 2000);
-      
-      return () => clearTimeout(timer);
-    } else {
-      // On desktop, go straight to quiz
+    // Show initial loading screen
+    const timer = setTimeout(() => {
       setLoadingState("completed");
-    }
-  }, [isMobile]);
+      setShowQuizIntro(true);
+    }, 2000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleStartQuiz = () => {
     setShowQuizIntro(false);
@@ -38,32 +33,22 @@ const QuizPage: React.FC = () => {
     setShowEmailCapture(false);
   };
 
-  if (isMobile) {
-    if (loadingState === "initial") {
-      return <LoadingScreen message="Preparando o seu quiz..." />;
-    }
-    
-    if (showQuizIntro) {
-      return <QuizIntro onStart={handleStartQuiz} />;
-    }
-    
-    if (showEmailCapture) {
-      return <EmailCapture onSubmit={handleEmailSubmit} />;
-    }
-
-    return (
-      <div className="flex min-h-screen w-full bg-white">
-        <div className="w-full px-2 py-4">
-          <Quiz startWithEmail={email} />
-        </div>
-      </div>
-    );
+  if (loadingState === "initial") {
+    return <LoadingScreen message="Preparando o seu quiz..." />;
+  }
+  
+  if (showQuizIntro) {
+    return <QuizIntro onStart={handleStartQuiz} />;
+  }
+  
+  if (showEmailCapture) {
+    return <EmailCapture onSubmit={handleEmailSubmit} />;
   }
 
   return (
-    <div className="flex min-h-screen w-full">
-      <div className="w-full md:w-1/2 p-8 flex items-center justify-center">
-        <Quiz />
+    <div className="flex min-h-screen w-full bg-white">
+      <div className="w-full md:w-1/2 px-2 py-4 md:p-8 md:flex md:items-center md:justify-center">
+        <Quiz startWithEmail={email} />
       </div>
       <div className="hidden md:block md:w-1/2 bg-cover bg-center" style={{ 
         backgroundImage: "url('https://cdn.builder.io/api/v1/image/assets/2e2aac027a9a4d32a285eb7e333fa9cf/148d5693-c767-4219-96a3-139690352b82.png?placeholderIfAbsent=true')" 

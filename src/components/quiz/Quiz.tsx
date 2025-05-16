@@ -217,10 +217,8 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       // Show loading screen when calculating result
-      if (isMobile) {
-        setLoadingMessage("Gerando seu resultado...");
-        setIsSubmitting(true);
-      }
+      setLoadingMessage("Gerando seu resultado...");
+      setIsSubmitting(true);
       
       // Calculate score and navigate to result
       const totalPoints = Object.values(answers).reduce(
@@ -255,7 +253,7 @@ const Quiz: React.FC<QuizProps> = ({ startWithEmail = "" }) => {
     }
   };
 
-  if (isSubmitting && loadingMessage) {
+  if (isSubmitting) {
     return <LoadingScreen message={loadingMessage} />;
   }
 
