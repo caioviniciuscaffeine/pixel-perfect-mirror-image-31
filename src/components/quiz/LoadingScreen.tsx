@@ -7,6 +7,10 @@ interface LoadingScreenProps {
 }
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ message }) => {
+  const isMobile = useIsMobile();
+
+  if (!isMobile) return null;
+
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#F04E98] text-white z-50">
       <div className="flex flex-col items-center justify-center h-screen w-full px-6">
